@@ -2,8 +2,8 @@ name: Deploy to Cloud Run
 
 env:
   SERVICE_NAME: custom-nextapp-service
-  PROJECT_ID: web-app
-  DOCKER_IMAGE_URL: us-central1-docker.pkg.dev/web-app/nextjs-app/custom-nextapp-service
+  PROJECT_ID: app-web-467210
+  DOCKER_IMAGE_URL: us-central1-docker.pkg.dev/app-web-467210/nextjs-app/custom-nextapp-service
 
 on:
   push:
