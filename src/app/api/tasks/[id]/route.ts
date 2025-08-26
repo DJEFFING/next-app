@@ -1,6 +1,58 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '../../../../../lib/prisma'
 
+/**
+ * @swagger
+ * /api/tasks/{id}:
+ *   get:
+ *     summary: Récupérer une tâche par son ID
+ *     description: |
+ *       Retourne une tâche unique en se basant sur son identifiant.
+ *     tags:
+ *       - Tâches
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: L'identifiant de la tâche.
+ *         schema:
+ *           type: integer
+ *           example: 1
+ *     responses:
+ *       200:
+ *         description: Tâche trouvée avec succès
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 data:
+ *                   $ref: '#/components/schemas/Task'
+ *                 message:
+ *                   type: string
+ *                   example: "tache trouvée !"
+ *       404:
+ *         description: Tâche non trouvée
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ *             example:
+ *               success: false
+ *               error: "Tache non trouvé"
+ *       500:
+ *         description: Erreur serveur
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ *             example:
+ *               success: false
+ *               error: "Erreur lors de la récupération des taches"
+ */
 export async function GET(
     request: NextRequest,
     {params}: {params:{id: string}}
@@ -39,6 +91,66 @@ export async function GET(
     
 }
 
+
+/**
+ * @swagger
+ * /api/tasks/{id}:
+ *   delete:
+ *     summary: Supprimer une tâche
+ *     description: |
+ *       Supprime une tâche spécifique en utilisant son ID.
+ *     tags:
+ *       - Tâches
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: L'identifiant de la tâche à supprimer.
+ *         schema:
+ *           type: integer
+ *           example: 1
+ *     responses:
+ *       200:
+ *         description: Tâche supprimée avec succès
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: "Tache 'Acheter du lait' supprimé avec succès"
+ *       400:
+ *         description: ID de tâche invalide
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ *             example:
+ *               success: false
+ *               error: "ID de la tache invalide"
+ *       404:
+ *         description: Tâche non trouvée
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ *             example:
+ *               success: false
+ *               error: "tache non trouvé"
+ *       500:
+ *         description: Erreur serveur
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ *             example:
+ *               success: false
+ *               error: "Erreur lors de la suppression de la tache"
+ */
 export async function DELETE(
     request: NextRequest,
     { params }: { params: { id: string } }
@@ -94,6 +206,89 @@ export async function DELETE(
 }
 
 
+
+/**
+ * @swagger
+ * /api/tasks/{id}:
+ *   put:
+ *     summary: Mettre à jour une tâche
+ *     description: |
+ *       Met à jour une tâche existante en utilisant son ID.
+ *       Seuls les champs fournis dans le corps de la requête seront mis à jour.
+ *     tags:
+ *       - Tâches
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: L'identifiant de la tâche à mettre à jour.
+ *         schema:
+ *           type: integer
+ *           example: 1
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               title:
+ *                 type: string
+ *                 example: "Acheter des œufs"
+ *               description:
+ *                 type: string
+ *                 example: "Préparer un gâteau pour le weekend"
+ *               dueDate:
+ *                 type: string
+ *                 format: date-time
+ *                 example: "2024-01-25T15:00:00.000Z"
+ *               completed:
+ *                 type: boolean
+ *                 example: true
+ *     responses:
+ *       200:
+ *         description: Tâche mise à jour avec succès
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 data:
+ *                   $ref: '#/components/schemas/Task'
+ *                 message:
+ *                   type: string
+ *                   example: "Tache modifié avec succès"
+ *       400:
+ *         description: Données de mise à jour invalides
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ *             example:
+ *               success: false
+ *               error: "Le titre est requis et doit être une chaîne non vide"
+ *       404:
+ *         description: Tâche non trouvée
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ *             example:
+ *               success: false
+ *               error: "Tache non trouvé"
+ *       500:
+ *         description: Erreur serveur
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorResponse'
+ *             example:
+ *               success: false
+ *               error: "Erreur lors de la modification de la tache"
+ */
 export async function PUT(
     request: NextRequest,
     { params }: { params: { id: string } }
