@@ -67,51 +67,53 @@ interface TaskUpdateData {
  *               error: "Erreur lors de la récupération des taches"
  */
 export async function GET(
-    request: NextRequest,
-    { params }: RouteParams
+  request: NextRequest,
+  { params }: RouteParams
 ) {
-    try {
-        const id = parseInt(params.id);
-        
-        // Validation de l'ID
-        if (isNaN(id) || id <= 0) {
-            return NextResponse.json(
-                {
-                    success: false,
-                    error: 'ID de la tache invalide'
-                },
-                { status: 400 }
-            )
-        }
+  try {
+    // Next.js 15: params doit être awaité  
+    const { id: idParam } = await params;
+    const id = parseInt(idParam);
 
-        const task = await findTaskById(id);
-
-        if (!task) {
-            return NextResponse.json(
-                {
-                    success: false,
-                    error: 'Tache non trouvé'
-                },
-                { status: 404 }
-            )
-        }
-
-        return NextResponse.json({
-            success: true,
-            data: task,
-            message: 'Tache trouvée !'
-        })
-
-    } catch (err) {
-        console.error('Erreur lors de la récupération des taches : ', err)
-        return NextResponse.json(
-            {
-                success: false,
-                error: 'Erreur lors de la récupération des taches'
-            },
-            { status: 500 }
-        )
+    // Validation de l'ID
+    if (isNaN(id) || id <= 0) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'ID de la tache invalide'
+        },
+        { status: 400 }
+      )
     }
+
+    const task = await findTaskById(id);
+
+    if (!task) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Tache non trouvé'
+        },
+        { status: 404 }
+      )
+    }
+
+    return NextResponse.json({
+      success: true,
+      data: task,
+      message: 'Tache trouvée !'
+    })
+
+  } catch (err) {
+    console.error('Erreur lors de la récupération des taches : ', err)
+    return NextResponse.json(
+      {
+        success: false,
+        error: 'Erreur lors de la récupération des taches'
+      },
+      { status: 500 }
+    )
+  }
 }
 
 /**
@@ -174,55 +176,57 @@ export async function GET(
  *               error: "Erreur lors de la suppression de la tache"
  */
 export async function DELETE(
-    request: NextRequest,
-    { params }: RouteParams
+  request: NextRequest,
+  { params }: RouteParams
 ) {
-    try {
-        const id = parseInt(params.id)
+  try {
+    // Next.js 15: params doit être awaité
+    const { id: idParam } = await params;
+    const id = parseInt(idParam);
 
-        // Validation de l'ID
-        if (isNaN(id) || id <= 0) {
-            return NextResponse.json(
-                {
-                    success: false,
-                    error: 'ID de la tache invalide'
-                },
-                { status: 400 }
-            )
-        }
-
-        // Vérifier si la tache existe
-        const existingTask = await findTaskById(id)
-
-        if (!existingTask) {
-            return NextResponse.json(
-                {
-                    success: false,
-                    error: 'Tache non trouvé'
-                },
-                { status: 404 }
-            )
-        }
-
-        // Supprimer la tache
-        await prisma.task.delete({
-            where: { id }
-        })
-
-        return NextResponse.json({
-            success: true,
-            message: `Tache "${existingTask.title}" supprimé avec succès`
-        })
-    } catch (error) {
-        console.error('Erreur lors de la suppression de la tache:', error)
-        return NextResponse.json(
-            {
-                success: false,
-                error: 'Erreur lors de la suppression de la tache'
-            },
-            { status: 500 }
-        )
+    // Validation de l'ID
+    if (isNaN(id) || id <= 0) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'ID de la tache invalide'
+        },
+        { status: 400 }
+      )
     }
+
+    // Vérifier si la tache existe
+    const existingTask = await findTaskById(id)
+
+    if (!existingTask) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Tache non trouvé'
+        },
+        { status: 404 }
+      )
+    }
+
+    // Supprimer la tache
+    await prisma.task.delete({
+      where: { id }
+    })
+
+    return NextResponse.json({
+      success: true,
+      message: `Tache "${existingTask.title}" supprimé avec succès`
+    })
+  } catch (error) {
+    console.error('Erreur lors de la suppression de la tache:', error)
+    return NextResponse.json(
+      {
+        success: false,
+        error: 'Erreur lors de la suppression de la tache'
+      },
+      { status: 500 }
+    )
+  }
 }
 
 /**
@@ -308,120 +312,122 @@ export async function DELETE(
  *               error: "Erreur lors de la modification de la tache"
  */
 export async function PUT(
-    request: NextRequest,
-    { params }: RouteParams
+  request: NextRequest,
+  { params }: RouteParams
 ) {
-    try {
-        const id = parseInt(params.id)
+  try {
+    // Next.js 15: params doit être awaité
+    const { id: idParam } = await params;
+    const id = parseInt(idParam);
 
-        // Validation de l'ID
-        if (isNaN(id) || id <= 0) {
-            return NextResponse.json(
-                {
-                    success: false,
-                    error: 'ID de la tache invalide'
-                },
-                { status: 400 }
-            )
-        }
-
-        // Vérifier si la tache existe
-        const task = await findTaskById(id);
-
-        if (!task) {
-            return NextResponse.json(
-                {
-                    success: false,
-                    error: 'Tache non trouvé'
-                },
-                { status: 404 }
-            )
-        }
-
-        const body: TaskUpdateData = await request.json()
-        const { title, description, dueDate, completed } = body
-
-        // Validation des données
-        if (title !== undefined && (typeof title !== 'string' || title.trim().length === 0)) {
-            return NextResponse.json(
-                {
-                    success: false,
-                    error: 'Le titre doit être une chaîne non vide'
-                },
-                { status: 400 }
-            )
-        }
-
-        if (description !== undefined && typeof description !== 'string') {
-            return NextResponse.json(
-                {
-                    success: false,
-                    error: 'La description doit être une chaîne'
-                },
-                { status: 400 }
-            )
-        }
-
-        // Préparer les données de mise à jour
-        const updateData: Partial<TaskUpdateData> = {}
-        
-        if (title !== undefined) {
-            updateData.title = title.trim()
-        }
-        
-        if (description !== undefined) {
-            updateData.description = description.trim()
-        }
-        
-        if (dueDate !== undefined) {
-            updateData.dueDate = new Date(dueDate)
-        }
-        
-        if (completed !== undefined) {
-            updateData.completed = completed
-        }
-
-        // Mettre à jour la tâche seulement si il y a des données à modifier
-        if (Object.keys(updateData).length === 0) {
-            return NextResponse.json(
-                {
-                    success: false,
-                    error: 'Aucune donnée à mettre à jour'
-                },
-                { status: 400 }
-            )
-        }
-
-        const updatedTask = await prisma.task.update({
-            where: { id },
-            data: updateData
-        })
-
-        return NextResponse.json({
-            success: true,
-            data: updatedTask,
-            message: 'Tache modifiée avec succès'
-        })
-    } catch (error) {
-        console.error('Erreur lors de la modification de la tache:', error)
-        return NextResponse.json(
-            {
-                success: false,
-                error: 'Erreur lors de la modification de la tache'
-            },
-            { status: 500 }
-        )
+    // Validation de l'ID
+    if (isNaN(id) || id <= 0) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'ID de la tache invalide'
+        },
+        { status: 400 }
+      )
     }
+
+    // Vérifier si la tache existe
+    const task = await findTaskById(id);
+
+    if (!task) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Tache non trouvé'
+        },
+        { status: 404 }
+      )
+    }
+
+    const body: TaskUpdateData = await request.json()
+    const { title, description, dueDate, completed } = body
+
+    // Validation des données
+    if (title !== undefined && (typeof title !== 'string' || title.trim().length === 0)) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Le titre doit être une chaîne non vide'
+        },
+        { status: 400 }
+      )
+    }
+
+    if (description !== undefined && typeof description !== 'string') {
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'La description doit être une chaîne'
+        },
+        { status: 400 }
+      )
+    }
+
+    // Préparer les données de mise à jour
+    const updateData: Partial<TaskUpdateData> = {}
+
+    if (title !== undefined) {
+      updateData.title = title.trim()
+    }
+
+    if (description !== undefined) {
+      updateData.description = description.trim()
+    }
+
+    if (dueDate !== undefined) {
+      updateData.dueDate = new Date(dueDate)
+    }
+
+    if (completed !== undefined) {
+      updateData.completed = completed
+    }
+
+    // Mettre à jour la tâche seulement si il y a des données à modifier
+    if (Object.keys(updateData).length === 0) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Aucune donnée à mettre à jour'
+        },
+        { status: 400 }
+      )
+    }
+
+    const updatedTask = await prisma.task.update({
+      where: { id },
+      data: updateData
+    })
+
+    return NextResponse.json({
+      success: true,
+      data: updatedTask,
+      message: 'Tache modifiée avec succès'
+    })
+  } catch (error) {
+    console.error('Erreur lors de la modification de la tache:', error)
+    return NextResponse.json(
+      {
+        success: false,
+        error: 'Erreur lors de la modification de la tache'
+      },
+      { status: 500 }
+    )
+  }
 }
 
 async function findTaskById(taskId: number) {
-    try {
-        const task = await prisma.task.findUnique({
-            where: { id: taskId }
-        });
-        return task;
-    } catch (err) {
-        console.error('Erreur lors de la recherche de la tâche:', err);
-        return null;
-    }
+  try {
+    const task = await prisma.task.findUnique({
+      where: { id: taskId }
+    });
+    return task;
+  } catch (err) {
+    console.error('Erreur lors de la recherche de la tâche:', err);
+    return null;
+  }
 }
