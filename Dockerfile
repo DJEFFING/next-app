@@ -3,7 +3,10 @@ FROM node:22.17.0-slim
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm install
+
+RUN apt-get update && apt-get install -y openssl && rm -rf /var/lib/apt/lists/*
+RUN npm install --legacy-peer-deps
+RUN npm cache clean --force
 
 COPY . .
 

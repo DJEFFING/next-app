@@ -1,15 +1,6 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
 import { prisma } from '../../../../../lib/prisma'
 
-// Interface pour typer correctement les paramètres de route
-// Next.js 15:
-// interface RouteParams {
-//   params: { id: string }
-// }
-
-interface PageProps {
-  params: { id: string };
-}
 
 // Type pour les données de tâche
 interface TaskUpdateData {
