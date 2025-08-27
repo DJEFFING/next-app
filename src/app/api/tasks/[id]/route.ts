@@ -3,9 +3,9 @@ import { prisma } from '../../../../../lib/prisma'
 
 // Interface pour typer correctement les paramètres de route
 // Next.js 15:
-interface RouteParams {
-  params: { id: string }
-}
+// interface RouteParams {
+//   params: { id: string }
+// }
 
 interface PageProps {
   params: { id: string };
@@ -72,8 +72,7 @@ interface TaskUpdateData {
  *               error: "Erreur lors de la récupération des taches"
  */
 export async function GET(
-  request: NextRequest,
-  { params }: PageProps // Next.js 15:
+  request: Request, { params }: { params: { id: string } }// Next.js 15:
 ) {
   try {
     // Next.js 15: params doit être awaité  
@@ -182,8 +181,7 @@ export async function GET(
  *               error: "Erreur lors de la suppression de la tache"
  */
 export async function DELETE(
-  request: NextRequest,
-  { params }: PageProps
+  request: Request, { params }: { params: { id: string } }
 ) {
   try {
     // Next.js 15: params doit être awaité
@@ -318,8 +316,7 @@ export async function DELETE(
  *               error: "Erreur lors de la modification de la tache"
  */
 export async function PUT(
-  request: NextRequest,
-  { params }: PageProps,
+  request: Request, { params }: { params: { id: string } }
 ) {
   try {
     // Next.js 15: params doit être awaité
