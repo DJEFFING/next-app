@@ -8,8 +8,8 @@ WORKDIR /app
 # Copier les fichiers de dépendances pour utiliser le cache Docker
 COPY package*.json ./
 
-# Installer toutes les dépendances, y compris celles de développement, car elles sont nécessaires pour la construction.
-RUN npm install
+# Installer toutes les dépendances, en ignorant les conflits de dépendance pour la compatibilité avec Next.js 14 et 15.
+RUN npm install --legacy-peer-deps
 
 # Copier le reste du code source
 COPY . .
