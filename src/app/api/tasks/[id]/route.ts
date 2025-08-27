@@ -1,6 +1,13 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '../../../../../lib/prisma'
 
+// Interface pour typer correctement les paramètres de route
+// Next.js 15:
+// interface RouteParams {
+//   params: Promise<{ id: string }>
+// }
+
+
 
 // Type pour les données de tâche
 interface TaskUpdateData {
@@ -62,12 +69,14 @@ interface TaskUpdateData {
  *               success: false
  *               error: "Erreur lors de la récupération des taches"
  */
-export async function GET(request: Request) {
+export async function GET(
+  request: Request, { params }: { params: Promise<{ id: string }> }// Next.js 15:
+) {
   try {
-    // Next.js 15
-    const {searchParams}  = new URL(request.url);
-    const idParam = searchParams.get('id');
-    const id = idParam ? parseInt(idParam) : NaN;
+    // Next.js 15: params doit être awaité  
+    const { id: idParam } = await params;
+
+    const id = parseInt(idParam);
 
     // Validation de l'ID
     if (isNaN(id) || id <= 0) {
@@ -169,12 +178,13 @@ export async function GET(request: Request) {
  *               success: false
  *               error: "Erreur lors de la suppression de la tache"
  */
-export async function DELETE(request: Request) {
+export async function DELETE(
+request: Request, { params }: { params: Promise<{ id: string }> }
+) {
   try {
-        // Next.js 15
-        const {searchParams}  = new URL(request.url);
-        const idParam = searchParams.get('id');
-        const id = idParam ? parseInt(idParam) : NaN;
+    // Next.js 15: params doit être awaité
+    const { id: idParam } = await params;
+    const id = parseInt(idParam);
 
     // Validation de l'ID
     if (isNaN(id) || id <= 0) {
@@ -303,12 +313,13 @@ export async function DELETE(request: Request) {
  *               success: false
  *               error: "Erreur lors de la modification de la tache"
  */
-export async function PUT(request: Request) {
+export async function PUT(
+  request: Request, { params }: { params: Promise<{ id: string }> }
+) {
   try {
-        // Next.js 15
-        const {searchParams}  = new URL(request.url);
-        const idParam = searchParams.get('id');
-        const id = idParam ? parseInt(idParam) : NaN;
+    // Next.js 15: params doit être awaité
+    const { id: idParam } = await params;
+    const id = parseInt(idParam);
 
     // Validation de l'ID
     if (isNaN(id) || id <= 0) {

@@ -132,7 +132,11 @@ const options = {
       }
     }
   },
-  apis: ['./src/app/api/**/*.ts'] 
+  apis: [
+    './src/app/api/**/*.ts',  // pour dev
+    './app/api/**/*.ts',      // si tu as mis du code à la racine
+    './.next/**/*.js'         // pour prod (fichiers compilés)
+  ]
 };
 
 export const swaggerSpec = swaggerJSDoc(options)
