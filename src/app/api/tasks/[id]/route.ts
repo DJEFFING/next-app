@@ -71,14 +71,12 @@ interface TaskUpdateData {
  *               success: false
  *               error: "Erreur lors de la récupération des taches"
  */
-export async function GET(
-  request: Request, { params }: { params: { id: string } }// Next.js 15:
-) {
+export async function GET(request: Request) {
   try {
-    // Next.js 15: params doit être awaité  
-    const { id: idParam } = await params;
-
-    const id = parseInt(idParam);
+    // Next.js 15
+    const {searchParams}  = new URL(request.url);
+    const idParam = searchParams.get('id');
+    const id = idParam ? parseInt(idParam) : NaN;
 
     // Validation de l'ID
     if (isNaN(id) || id <= 0) {
@@ -180,13 +178,12 @@ export async function GET(
  *               success: false
  *               error: "Erreur lors de la suppression de la tache"
  */
-export async function DELETE(
-  request: Request, { params }: { params: { id: string } }
-) {
+export async function DELETE(request: Request) {
   try {
-    // Next.js 15: params doit être awaité
-    const { id: idParam } = await params;
-    const id = parseInt(idParam);
+        // Next.js 15
+        const {searchParams}  = new URL(request.url);
+        const idParam = searchParams.get('id');
+        const id = idParam ? parseInt(idParam) : NaN;
 
     // Validation de l'ID
     if (isNaN(id) || id <= 0) {
@@ -315,13 +312,12 @@ export async function DELETE(
  *               success: false
  *               error: "Erreur lors de la modification de la tache"
  */
-export async function PUT(
-  request: Request, { params }: { params: { id: string } }
-) {
+export async function PUT(request: Request) {
   try {
-    // Next.js 15: params doit être awaité
-    const { id: idParam } = await params;
-    const id = parseInt(idParam);
+        // Next.js 15
+        const {searchParams}  = new URL(request.url);
+        const idParam = searchParams.get('id');
+        const id = idParam ? parseInt(idParam) : NaN;
 
     // Validation de l'ID
     if (isNaN(id) || id <= 0) {
