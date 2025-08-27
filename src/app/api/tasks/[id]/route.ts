@@ -2,8 +2,13 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '../../../../../lib/prisma'
 
 // Interface pour typer correctement les paramètres de route
+// Next.js 15:
 interface RouteParams {
   params: { id: string }
+}
+
+interface PageProps {
+  params: { id: string };
 }
 
 // Type pour les données de tâche
@@ -68,11 +73,12 @@ interface TaskUpdateData {
  */
 export async function GET(
   request: NextRequest,
-  { params }: RouteParams
+  { params }: PageProps // Next.js 15:
 ) {
   try {
     // Next.js 15: params doit être awaité  
     const { id: idParam } = await params;
+
     const id = parseInt(idParam);
 
     // Validation de l'ID
@@ -177,7 +183,7 @@ export async function GET(
  */
 export async function DELETE(
   request: NextRequest,
-  { params }: RouteParams
+  { params }: PageProps
 ) {
   try {
     // Next.js 15: params doit être awaité
@@ -313,7 +319,7 @@ export async function DELETE(
  */
 export async function PUT(
   request: NextRequest,
-  { params }: RouteParams
+  { params }: PageProps,
 ) {
   try {
     // Next.js 15: params doit être awaité
