@@ -45,7 +45,7 @@ jobs:
         run: |
           echo "Deploying service $SERVICE_NAME"
           gcloud run deploy $SERVICE_NAME \
-            --image ${{ env.DOCKER_IMAGE_URL }}:latest \
+            --image ${{ env.DOCKER_IMAGE_URL }}:${{ steps.tag.outputs.TAG }} \
             --platform managed \
             --region us-central1 \
             --allow-unauthenticated \
