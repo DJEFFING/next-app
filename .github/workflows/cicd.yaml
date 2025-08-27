@@ -18,6 +18,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Generate unique tag
+        id: tag
+        run: |
+          TAG=${GITHUB_SHA:0:7}
+          echo "TAG=$TAG" >> $GITHUB_OUTPUT
+
       - name: Google Cloud Auth
         uses: google-github-actions/auth@v2
         with:
@@ -32,8 +38,8 @@ jobs:
 
       - name: Build and Push Docker Image
         run: |
-          docker build -t ${{ env.DOCKER_IMAGE_URL }}:latest -f Dockerfile.prod .
-          docker push ${{ env.DOCKER_IMAGE_URL }}:latest
+          docker build -t ${{ env.DOCKER_IMAGE_URL }}:${{ steps.tag.outputs.TAG }} -f Dockerfile.prod .
+          docker push ${{ env.DOCKER_IMAGE_URL }}:${{ steps.tag.outputs.TAG }}
 
       - name: Deploy to Cloud Run
         run: |
