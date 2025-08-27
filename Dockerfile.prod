@@ -11,6 +11,9 @@ COPY package*.json ./
 # Installer toutes les dépendances, en ignorant les conflits de dépendance pour la compatibilité avec Next.js 14 et 15.
 RUN npm install --legacy-peer-deps
 
+# Nettoyer le cache npm pour éviter les erreurs de corruption
+RUN npm cache clean --force
+
 # Copier le reste du code source
 COPY . .
 
