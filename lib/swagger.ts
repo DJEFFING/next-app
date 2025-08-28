@@ -134,10 +134,9 @@ const options = {
   },
   apis: [
     './src/app/api/**/*.ts',  // pour dev
-    './app/api/**/*.ts', 
-    '../src/app/api/**/*.ts',     // si tu as mis du code à la racine
-    './.next/**/*.js',
-    './.next/server/app/api/**/*.js'
+    './src/app/api/**/*.js',
+    './app/api/**/*.js',
+    './src/pages/api/**/*.js'
   ]
 };
 

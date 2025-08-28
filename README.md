@@ -1,37 +1,94 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## Getting Started
+# TaskFlow : Documentation du projet
 
-First, run the development server:
+**TaskFlow** est une application web de gestion des tâches, développée avec **Next.js** dans un cadre éducatif.  
+L'objectif de ce projet est d'approfondir les connaissances sur les technologies suivantes :
+
+- Création d'une application **Next.js** associée à une base de données **Neon**.
+- Ajout d'une interface graphique avec **React** pour les opérations CRUD (Créer, Lire, Mettre à jour, Supprimer).
+- Approfondissement des composants **React** (`useState`, `useEffect`).
+- Intégration de **Swagger** pour la documentation de l'API.
+- Conteneurisation de l'application avec **Docker** pour un déploiement local et en production.
+- Mise en place d'un pipeline **CI/CD** avec **GitHub Actions** pour un déploiement automatique sur **Google Cloud Run**.
+
+---
+
+## ✨ Fonctionnalités principales
+- **Gestion des tâches** : Créez, modifiez, et supprimez des tâches facilement.
+- **Interface utilisateur réactive** : Conçue avec **React** pour une expérience fluide et rapide.
+- **Performance optimisée** : Utilisation de **Next.js** pour un temps de compilation réduit et une meilleure productivité.
+- **Qualité du code** : Intégration d'**ESLint** pour maintenir un code propre et cohérent.
+
+---
+
+## 🛠️ Technologies utilisées
+
+### Backend
+- TypeScript  
+- Neon Database  
+- Prisma  
+- Node.js (v22.17.0)  
+- Next.js (v15.5.0)  
+
+### Frontend
+- React.js  
+- Tailwind CSS  
+
+### Autres outils
+- Docker  
+- GitHub Actions  
+- Google Cloud Run  
+
+---
+
+## 🚀 Installation et démarrage
+
+Pour installer et démarrer l'application en local, suivez ces étapes :
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# Clonez le dépôt GitHub
+git clone https://github.com/DJEFFING/next-app.git
+
+# Déplacez-vous dans le répertoire du projet
+cd next-app
+
+# Installez les dépendances
+npm install --legacy-peer-deps --unsafe-perm
+````
+
+### ⚙️ Configuration de l'environnement
+
+* Créez le fichier **.env**
+* Ajoutez votre lien de base de données dans ce fichier.
+
+```bash
+# Générez le client Prisma
+npx prisma generate
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### ▶️ Lancement de l'application
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+# Lancez l'application en mode développement
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## 📡 Utilisation de l'API
 
-To learn more about Next.js, take a look at the following resources:
+Une fois le projet démarré, vous pouvez consulter la documentation **Swagger** :
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+* Local : [http://localhost:3000/api-docs](http://localhost:3000/api-docs)
+* Production : [https://custom-nextapp-service-828991456458.us-central1.run.app/api-docs](https://custom-nextapp-service-828991456458.us-central1.run.app/api-docs)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Vous y trouverez des exemples de requêtes et de réponses pour chaque endpoint.
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🎯 Résultat final
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-# next-app
+Le résultat final de l'application est accessible aux adresses suivantes :
+
+* Local : [http://localhost:3000/tasks](http://localhost:3000/tasks)
+* Production : [https://custom-nextapp-service-828991456458.us-central1.run.app/tasks](https://custom-nextapp-service-828991456458.us-central1.run.app/tasks)
