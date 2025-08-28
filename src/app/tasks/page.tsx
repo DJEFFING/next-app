@@ -1,7 +1,9 @@
-export default function Page(){
-    return(
-        <div>
-            <p>La Page principale du pojet.</p>
-        </div>
-    );
+import { TaskContainer } from "./components/taskContainer";
+
+export default function Page() {
+  return (
+    <div id="root">
+        <TaskContainer />
+    </div>
+  );
 }

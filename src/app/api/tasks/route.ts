@@ -242,6 +242,7 @@ export async function POST(request: NextRequest) {
         const body = await request.json()
         const { title, description, dueDate } = body
 
+
         // Validation des données
         if (!title || typeof title !== 'string' || title.trim().length === 0) {
             return NextResponse.json(
@@ -265,15 +266,32 @@ export async function POST(request: NextRequest) {
 
 
         // Créer le tache
-        // Créez un nouvel objet Date
-        const newDate = (dueDate) ? new Date(dueDate) : dueDate;
+        // Correction pour la date d'échéance
+        let newDate: Date | undefined = undefined;
+        if (dueDate) {
+            // Vérifier si la chaîne est valide avant de créer un objet Date
+            const parsedDate = new Date(dueDate);
+            if (!isNaN(parsedDate.getTime())) {
+                newDate = parsedDate;
+            } else {
+                return NextResponse.json(
+                    {
+                        success: false,
+                        error: "Format de date d'échéance invalide"
+                    },
+                    { status: 400 }
+                );
+            }
+        }
+
+        // Créer la tache
         const task = await prisma.task.create({
             data: {
                 title: title.trim(),
                 description: description.trim(),
-                dueDate: newDate
+                dueDate: newDate,
             }
-        })
+        });
 
         return NextResponse.json(
             {
