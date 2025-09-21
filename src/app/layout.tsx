@@ -1,6 +1,23 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { Inter } from "next/font/google"; // Exemple si vous utilisez Inter
+import "../assets/style.css";
+
+const inter = Inter({ subsets: ["latin"] }); // Assurez-vous que cette ligne est correcte
+import {
+  ClerkProvider,
+  SignInButton,
+  SignUpButton,
+  SignedIn,
+  SignedOut,
+  UserButton,
+} from "@clerk/nextjs";
+
+const style = {
+  backgroundColor: "#141414",
+  color: "rgba(255, 255, 255, 0.87)",
+};
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,10 +40,54 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        {children}
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en">
+        <head>
+          <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+          />
+          <link
+            href="https://getbootstrap.com/docs/5.3/assets/css/docs.css"
+            rel="stylesheet"
+          />
+        </head>
+        <body
+          className={`${geistSans.variable} ${geistMono.variable}`}
+          style={style}
+        >
+          <nav
+            className="navbar bg-dark border-bottom border-body"
+            data-bs-theme="dark"
+          >
+            <div className="container-fluid  align-items-center">
+              {/* Zone gauche : SignIn / SignUp */}
+              <SignedOut>
+                <div className="row">
+                  <div className="col-6">
+                    <SignInButton />
+                  </div>
+                  <div className="col-6">
+                    <SignUpButton/>
+                  </div>
+                </div>
+              </SignedOut>
+
+              {/* Zone droite : UserButton */}
+              <SignedIn>
+                <div className="ms-auto">
+                  <UserButton />
+                </div>
+              </SignedIn>
+            </div>
+          </nav>
+
+          {/* <header
+            className={`${inter.className} min-h-screen bg-gray-50 text-gray-900 antialiased flex justify-end items-center p-4 gap-4 h-16`}
+          ></header> */}
+          {children}
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }

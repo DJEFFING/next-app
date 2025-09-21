@@ -1,5 +1,6 @@
 import { NextResponse, NextRequest } from "next/server";
 import { prisma } from "../../../../lib/prisma";
+import { auth } from "@clerk/nextjs/server";
 
 /**
  * @swagger
@@ -134,6 +135,9 @@ import { prisma } from "../../../../lib/prisma";
  *               error: "Erreur lors de la création de la tâche"
  */
 export async function GET() {
+    const { userId } = await auth(); // côté serveur
+    if (!userId) return new Response("Unauthorized", { status:401 });
+
     try {
 
         const tasks = await prisma.task.findMany({
@@ -238,6 +242,9 @@ export async function GET() {
  *                   example: "Erreur lors de la création du tache"
  */
 export async function POST(request: NextRequest) {
+    const { userId } = await auth(); // côté serveur
+    if (!userId) return new Response("Unauthorized", { status:401 });
+    
     try {
         const body = await request.json()
         const { title, description, dueDate } = body

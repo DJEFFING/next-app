@@ -6,8 +6,6 @@ import { Footer } from "./footer/Footer";
 import { Header } from "./header/Header";
 import { TaskInput } from "./taskInput/taskInput";
 import { TaskList } from "./taskList/TaskList";
-import {Task} from "../../models/task"
-import { POST } from "@/app/api/tasks/route";
 
 export const TaskContainer = () => {
   const [taskList, setTaskList] = useState([]);
