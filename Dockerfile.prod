@@ -18,6 +18,14 @@ RUN npm install --legacy-peer-deps --unsafe-perm
 # Copier tout le projet
 COPY . .
 
+# === Ajouter les ARG pour les variables Clerk ===
+ARG NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
+ARG CLERK_SECRET_KEY
+
+# === Les exposer comme ENV pour que Next.js puisse les utiliser ===
+ENV NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=$NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
+ENV CLERK_SECRET_KEY=$CLERK_SECRET_KEY
+
 # Générer le client Prisma
 RUN npx prisma generate
 
