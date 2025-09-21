@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '../../../../../lib/prisma'
+import { auth } from '@clerk/nextjs/server'
 
 // Interface pour typer correctement les paramètres de route
 // Next.js 15:
@@ -72,6 +73,8 @@ interface TaskUpdateData {
 export async function GET(
   request: Request, { params }: { params: Promise<{ id: string }> }// Next.js 15:
 ) {
+    const { userId } = await auth(); // côté serveur
+    if (!userId) return new Response("Unauthorized", { status:401 });
   try {
     // Next.js 15: params doit être awaité  
     const { id: idParam } = await params;
@@ -179,8 +182,11 @@ export async function GET(
  *               error: "Erreur lors de la suppression de la tache"
  */
 export async function DELETE(
+  
 request: Request, { params }: { params: Promise<{ id: string }> }
 ) {
+  const { userId } = await auth(); // côté serveur
+  if (!userId) return new Response("Unauthorized", { status:401 });
   try {
     // Next.js 15: params doit être awaité
     const { id: idParam } = await params;
@@ -316,6 +322,8 @@ request: Request, { params }: { params: Promise<{ id: string }> }
 export async function PUT(
   request: Request, { params }: { params: Promise<{ id: string }> }
 ) {
+  const { userId } = await auth(); // côté serveur
+  if (!userId) return new Response("Unauthorized", { status:401 });
   try {
     // Next.js 15: params doit être awaité
     const { id: idParam } = await params;

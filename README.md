@@ -18,6 +18,7 @@ L'objectif de ce projet est d'approfondir les connaissances sur les technologies
 - **Interface utilisateur réactive** : Conçue avec **React** pour une expérience fluide et rapide.
 - **Performance optimisée** : Utilisation de **Next.js** pour un temps de compilation réduit et une meilleure productivité.
 - **Qualité du code** : Intégration d'**ESLint** pour maintenir un code propre et cohérent.
+- **Authentification** : Utilisation de cleck pour l'authentification des utilisateur et la protection des routes et de l'api
 
 ---
 
@@ -28,7 +29,8 @@ L'objectif de ce projet est d'approfondir les connaissances sur les technologies
 - Neon Database  
 - Prisma  
 - Node.js (v22.17.0)  
-- Next.js (v15.5.0)  
+- Next.js (v15.5.0)
+- Cleck  
 
 ### Frontend
 - React.js  
@@ -59,7 +61,7 @@ npm install --legacy-peer-deps --unsafe-perm
 ### ⚙️ Configuration de l'environnement
 
 * Créez le fichier **.env**
-* Ajoutez votre lien de base de données dans ce fichier.
+* Ajoutez votre lien de base de données dans ce fichier. Vous devez également y ajouter (NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY et  CLERK_SECRET_KEY) pour faire fonctionner cleck et l'authentification
 
 ```bash
 # Générez le client Prisma
